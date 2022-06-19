@@ -13,7 +13,7 @@ const SideBar = () => {
     <SideBarWrapper expanded={expanded}>
       <Logo expanded={expanded} />
       <ExpandIcon onExpand={onExpand} expanded={expanded} />
-      <Menu />
+      <Menu expanded={expanded} />
     </SideBarWrapper>
   );
 };

@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import { Title, LogoWrapper, StyledLogo } from "./style";
 
 type Props = {
@@ -5,10 +6,12 @@ type Props = {
 };
 const Logo = ({ expanded }: Props) => {
   return (
-    <LogoWrapper>
-      <StyledLogo />
-      {expanded && <Title>Harmoney</Title>}
-    </LogoWrapper>
+    <NavLink to="/">
+      <LogoWrapper>
+        <StyledLogo />
+        {expanded && <Title>Harmoney</Title>}
+      </LogoWrapper>
+    </NavLink>
   );
 };
 

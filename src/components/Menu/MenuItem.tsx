@@ -1,21 +1,30 @@
-import { ReactElement } from "react";
+import { ReactElement, useMemo } from "react";
+import { NavLink, useMatch } from "react-router-dom";
 import { MenuItemIcon, MenuItemName, MenuItemWrapper } from "./style";
 
 type Props = {
   item: {
     name: string;
     icon: ReactElement;
-    path: string
+    path: string;
   };
-  selected: boolean
+  expanded: boolean;
 };
 
-const MenuItem = ({ item, selected }: Props) => {
+const MenuItem = ({ item, expanded }: Props) => {
+  const match = useMatch(item.path);
+
+  const selected = useMemo(() => !!match, [match]);
+
   return (
-    <MenuItemWrapper selected={selected}>
-      <MenuItemIcon selected={selected}>{item.icon}</MenuItemIcon>
-      <MenuItemName selected={selected}> {item.name}</MenuItemName>
-    </MenuItemWrapper>
+    <NavLink to={item.path}>
+      <MenuItemWrapper selected={selected} expanded={expanded}>
+        <MenuItemIcon selected={selected}>{item.icon}</MenuItemIcon>
+        {expanded && (
+          <MenuItemName selected={selected}> {item.name}</MenuItemName>
+        )}
+      </MenuItemWrapper>
+    </NavLink>
   );
 };
 

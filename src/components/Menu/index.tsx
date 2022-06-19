@@ -5,30 +5,41 @@ import Dashboard from "../../icons/Dashboard";
 import PartnerCompanies from "../../icons/PartnerCompanies";
 import MenuItem from "./MenuItem";
 import { MenuWrapper } from "./style";
-import {
-  NavLink,
-  useRouteMatch
-} from "react-router-dom";
+import Settings from "../../icons/Settings";
 
 const MENU_ITEMS = [
-  { name: "Dashboard", icon: <Dashboard />, path: '/dashboard' },
-  { name: "Contract Management ", icon: <ContractManage />, path: '/contract-management' },
-  { name: "Contract Costs ", icon: <ContractCost />, path: '/contract-costs' },
-  { name: "Contract Profitability ", icon: <ContractProfit />, path: '/contract-profitability' },
-  { name: " Partner Companies ", icon: <PartnerCompanies />, path: '/partner-companies' },
+  { name: "Dashboard", icon: <Dashboard />, path: "/dashboard" },
+  {
+    name: "Contract Revenues ",
+    icon: <ContractManage />,
+    path: "/contract-revenues",
+  },
+  { name: "Contract Costs ", icon: <ContractCost />, path: "/contract-costs" },
+  {
+    name: "Contract Profitability ",
+    icon: <ContractProfit />,
+    path: "/contract-profitability",
+  },
+  {
+    name: " Client Base ",
+    icon: <PartnerCompanies />,
+    path: "/client-base",
+  },
 ];
 
-const Menu = () => {
-  let match = useRouteMatch();
-  console.log(match)
+const Menu = ({ expanded }: { expanded: boolean }) => {
   return (
-    <MenuWrapper>
-      {MENU_ITEMS.map((item, id) => (
-        <NavLink to={item.path} key={id}>
-        <MenuItem item={item} selected />
-        </NavLink>
-      ))}
-    </MenuWrapper>
+    <>
+      <MenuWrapper>
+        {MENU_ITEMS.map((item, id) => (
+          <MenuItem item={item} expanded={expanded} key={id} />
+        ))}
+      </MenuWrapper>
+      <MenuItem
+        item={{ name: "Settings", icon: <Settings />, path: "/settings" }}
+        expanded={expanded}
+      />
+    </>
   );
 };
 
