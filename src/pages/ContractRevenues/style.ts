@@ -34,10 +34,11 @@ export const StyledHr = styled.hr`
   margin: 15px 0;
 `;
 
+//42px depends on active filters
 export const StyledTable = styled(Table)`
   .ant-table-body {
     max-height: calc(
-      100vh - 56px - 32px - 52px - 36px - 56px - 18px - 68px - 95px
+      100vh - 56px - 32px - 52px - 36px - 56px - 18px - 68px - 95px - 105px
     ) !important;
   }
 

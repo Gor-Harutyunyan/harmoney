@@ -10,9 +10,9 @@ const FILTER_OPTIONS = [
   { id: 0, name: "Category", icon: <Categories />, value: "category" },
   {
     id: 1,
-    name: "Partner Companies",
+    name: "Company Name",
     icon: <PartnerCompanies />,
-    value: "partnerCompanies",
+    value: "companyName",
   },
   {
     id: 2,
@@ -67,7 +67,6 @@ const FilterOptions = ({ extraFilters, setExtraFilters }: Props) => {
     },
     [setExtraFilters]
   );
-  console.log(extraFilters, "sadkskldal");
 
   return (
     <FilterOptionsWrapper>

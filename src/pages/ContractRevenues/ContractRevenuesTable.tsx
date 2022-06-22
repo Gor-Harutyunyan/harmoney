@@ -5,19 +5,6 @@ import Dots from "../../icons/Dots";
 import { Option } from "../../interfaces/viewOptions";
 import { StyledTable } from "./style";
 
-type DataType = {
-  key: number;
-  name: string;
-  number: number;
-  partnerCompany: string;
-  type: string;
-  totalRevenue: number;
-  creationDate: string;
-  startDate: string;
-  endDate: string;
-  id: number;
-};
-
 const columns: ColumnsType<Record<string, any>> = [
   {
     title: "ID",
@@ -44,17 +31,17 @@ const columns: ColumnsType<Record<string, any>> = [
     width: 100,
   },
   {
-    title: "Partner Company",
-    dataIndex: "partnerCompany",
-    key: "partnerCompany",
-    sorter: (a, b) => a.partnerCompany - b.partnerCompany,
+    title: "Company Name",
+    dataIndex: "companyName",
+    key: "companyName",
+    sorter: (a, b) => a.companyName - b.companyName,
     width: 100,
   },
   {
-    title: "Type",
-    dataIndex: "type",
-    key: "type",
-    sorter: (a, b) => a.type - b.type,
+    title: "Category",
+    dataIndex: "category",
+    key: "category",
+    sorter: (a, b) => a.category - b.category,
     width: 100,
   },
   {
@@ -86,6 +73,14 @@ const columns: ColumnsType<Record<string, any>> = [
     width: 70,
   },
   {
+    title: "Status",
+    dataIndex: "status",
+    key: "status",
+    width: 44,
+    sorter: (a, b) => a.status - b.status,
+    // fixed: "right",
+  },
+  {
     title: "",
     dataIndex: "action",
     key: "action",
@@ -103,23 +98,13 @@ const columns: ColumnsType<Record<string, any>> = [
   },
 ];
 
-const data: DataType[] = [];
-for (let i = 0; i < 10; i++) {
-  data.push({
-    key: i,
-    name: `Name ${i}`,
-    number: i,
-    partnerCompany: "Securiteam",
-    type: "Hourly rate",
-    totalRevenue: i * 1000,
-    creationDate: "25. 05. 2022",
-    startDate: "25. 05. 2022",
-    endDate: "25. 05. 2022",
-    id: i,
-  });
-}
-
-const ContractRevenuesTable = ({ viewOptions }: { viewOptions: Option[] }) => {
+const ContractRevenuesTable = ({
+  viewOptions,
+  data,
+}: {
+  viewOptions: Option[];
+  data: any;
+}) => {
   const filteredColumns = useMemo(() => {
     return columns.filter((column: any) =>
       viewOptions.find(

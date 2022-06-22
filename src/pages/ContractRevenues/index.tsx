@@ -1,5 +1,6 @@
 import { Pagination } from "antd";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import ExtraFilters from "../../components/ExtraFilters";
 import TableFilters from "../../components/TableFilters";
 import ViewFilter from "../../components/ViewFIlter";
 import { Option } from "../../interfaces/viewOptions";
@@ -9,6 +10,20 @@ import {
   ContractRevenuesPagination,
   ContractRevenuesWrapper,
 } from "./style";
+
+type DataType = {
+  key: number;
+  name: string;
+  number: number;
+  companyName: string;
+  category: string;
+  totalRevenue: number;
+  creationDate: string;
+  startDate: string;
+  endDate: string;
+  id: number;
+  status: string;
+};
 
 const VIEW_OPTIONS: Option[] = [
   {
@@ -33,15 +48,15 @@ const VIEW_OPTIONS: Option[] = [
   },
   {
     id: 3,
-    name: "Contract Partner Company",
+    name: "Company Name",
     show: true,
-    value: "partnerCompany",
+    value: "companyName",
   },
   {
     id: 4,
-    name: "Contract Type",
+    name: "Contract Category",
     show: true,
-    value: "type",
+    value: "category",
   },
   {
     id: 5,
@@ -68,13 +83,88 @@ const VIEW_OPTIONS: Option[] = [
     show: false,
     value: "endDate",
   },
+  {
+    id: 9,
+    name: "Status",
+    show: true,
+    value: "status",
+  },
 ];
 
 const ContractRevenues = () => {
   const [current, setCurrent] = useState(1);
   const [viewOptions, setViewOptions] = useState(VIEW_OPTIONS);
   const [selectedViewOption, setSelectedViewOption] = useState("default");
-  const [extraFilters, setExtraFilters] = useState(new Set(""));
+  const [extraFiltersToShow, setExtraFiltersToShow] = useState(new Set(""));
+  const [extraFiltersOptionsSelected, setExtraFiltersOptionsSelected] =
+    useState<Record<string, any>>({
+      category: new Set(),
+      companyName: new Set(),
+      status: new Set(),
+    });
+
+  const tableData = useMemo(() => {
+    const data: DataType[] = [];
+    for (let i = 0; i < 10; i++) {
+      data.push({
+        key: i,
+        name: `Name ${i}`,
+        number: i,
+        companyName: Math.random() > 0.5 ? "Google" : " Securiteam",
+        category: Math.random() > 0.5 ? "Other" : "Hourly rate",
+        totalRevenue: i * 1000,
+        creationDate: "25. 05. 2022",
+        startDate: "25. 05. 2022",
+        endDate: "25. 05. 2022",
+        id: i,
+        status: Math.random() > 0.5 ? "active" : "expired",
+      });
+    }
+
+    return data;
+  }, []);
+
+  const extraFiltersOptions = useMemo(() => {
+    const category = new Set();
+    const companyName = new Set();
+    const status = new Set();
+
+    tableData.forEach((item) => {
+      category.add(item.category);
+      companyName.add(item.companyName);
+      status.add(item.status);
+    });
+
+    return {
+      category,
+      companyName,
+      status,
+    };
+  }, [tableData]);
+
+  const filteredTableData = useMemo(() => {
+    const categorySize = extraFiltersOptionsSelected.category?.size;
+    const companyNameSize = extraFiltersOptionsSelected.companyName?.size;
+    const statusSize = extraFiltersOptionsSelected.status?.size;
+
+    if (!!categorySize || !!companyNameSize || !!statusSize) {
+      return tableData.filter((item) => {
+        return (
+          (extraFiltersOptionsSelected.category?.size
+            ? extraFiltersOptionsSelected.category.has(item.category)
+            : true) &&
+          (extraFiltersOptionsSelected.companyName?.size
+            ? extraFiltersOptionsSelected.companyName.has(item.companyName)
+            : true) &&
+          (extraFiltersOptionsSelected.status?.size
+            ? extraFiltersOptionsSelected.status.has(item.status)
+            : true)
+        );
+      });
+    }
+
+    return tableData;
+  }, [extraFiltersOptionsSelected, tableData]);
 
   const onChange = (page: number) => {
     console.log(page);
@@ -86,11 +176,15 @@ const ContractRevenues = () => {
   }, []);
 
   const changeExtraFilters = useCallback((value: any) => {
-    setExtraFilters(value);
+    setExtraFiltersToShow(value);
   }, []);
 
   const changeSelectedViewOption = useCallback((value: any) => {
     setSelectedViewOption(value);
+  }, []);
+
+  const changeExtraFiltersOptionsSelected = useCallback((value: any) => {
+    setExtraFiltersOptionsSelected(value);
   }, []);
 
   return (
@@ -103,11 +197,20 @@ const ContractRevenues = () => {
         <ViewFilter
           selectedViewOption={selectedViewOption}
           setSelectedViewOption={changeSelectedViewOption}
-          extraFilters={extraFilters}
+          extraFilters={extraFiltersToShow}
           setExtraFilters={changeExtraFilters}
         />
+        <ExtraFilters
+          extraFilterOptions={extraFiltersOptions}
+          extraFiltersToShow={extraFiltersToShow}
+          extraFiltersOptionsSelected={extraFiltersOptionsSelected}
+          changeExtraFiltersOptionsSelected={changeExtraFiltersOptionsSelected}
+        />
         {/* <StyledHr /> */}
-        <ContractRevenuesTable viewOptions={viewOptions} />
+        <ContractRevenuesTable
+          viewOptions={viewOptions}
+          data={filteredTableData}
+        />
       </ContractRevenuesMain>
       <ContractRevenuesPagination>
         {/* <div>1-10 of 120 pages</div>
