@@ -31,7 +31,6 @@ const FilterOptions = ({
     },
     [value, changeExtraFiltersOptionsSelected]
   );
-  console.log(selectedOptions, "selectedOptions");
 
   return (
     <FilterOptionsWrapper>

@@ -64,11 +64,12 @@ const ExtraFilters = ({
   extraFiltersOptionsSelected,
   changeExtraFiltersOptionsSelected,
 }: {
-  extraFilterOptions: Record<string, Set<unknown>>;
+  extraFilterOptions: Record<string, any>;
   extraFiltersToShow: Set<string>;
   extraFiltersOptionsSelected: Record<string, Set<unknown>>;
   changeExtraFiltersOptionsSelected: any;
 }) => {
+  
   return (
     <ExtraFiltersWrapper>
       {FILTER_OPTIONS.map((option) => {

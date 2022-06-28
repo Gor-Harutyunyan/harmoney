@@ -2,6 +2,7 @@ import { Dropdown } from "antd";
 import { ReactElement, useState } from "react";
 import ArrowDown from "../../icons/ArrowDown";
 import { ExtraFilterIcon, ExtraFilterName, ExtraFilterWrapper } from "./style";
+import StyledRange from "./Views/Range";
 import FilterOptions from "./Views/Select/Select";
 
 const VIEWS: Record<
@@ -21,7 +22,7 @@ const VIEWS: Record<
   }) => JSX.Element
 > = {
   select: FilterOptions,
-  range: FilterOptions,
+  range: StyledRange,
   date: FilterOptions,
 };
 

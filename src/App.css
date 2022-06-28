@@ -44,3 +44,29 @@ a {
     transform: rotate(360deg);
   }
 } */
+
+div,
+section {
+  scrollbar-color: #e6e8ec #fff;
+  scrollbar-width: thin;
+}
+
+div::-webkit-scrollbar,
+section::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+div::-webkit-scrollbar-track-piece,
+section::-webkit-scrollbar-track-piece {
+  background: #fff;
+}
+
+div::-webkit-scrollbar-thumb,
+section::-webkit-scrollbar-thumb {
+  height: 6px;
+  width: 6px;
+  background: #e6e8ec;
+  border-radius: 4px;
+  outline: 0;
+}

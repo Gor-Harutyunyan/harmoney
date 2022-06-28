@@ -101,6 +101,10 @@ const ContractRevenues = () => {
       category: new Set(),
       companyName: new Set(),
       status: new Set(),
+      totalRevRange: {
+        min: 0,
+        max: null,
+      },
     });
 
   const tableData = useMemo(() => {
@@ -129,6 +133,12 @@ const ContractRevenues = () => {
     const companyName = new Set();
     const status = new Set();
 
+    const totalRevenues = tableData.map((item) => item.totalRevenue);
+    const revenueRanges = {
+      min: Math.min(...totalRevenues),
+      max: Math.max(...totalRevenues),
+    };
+
     tableData.forEach((item) => {
       category.add(item.category);
       companyName.add(item.companyName);
@@ -139,6 +149,7 @@ const ContractRevenues = () => {
       category,
       companyName,
       status,
+      totalRevRange: revenueRanges,
     };
   }, [tableData]);
 
@@ -146,18 +157,31 @@ const ContractRevenues = () => {
     const categorySize = extraFiltersOptionsSelected.category?.size;
     const companyNameSize = extraFiltersOptionsSelected.companyName?.size;
     const statusSize = extraFiltersOptionsSelected.status?.size;
+    const totalRangeSelected =
+      extraFiltersOptionsSelected.totalRevRange.min !== null &&
+      extraFiltersOptionsSelected.totalRevRange.max !== null;
 
-    if (!!categorySize || !!companyNameSize || !!statusSize) {
+    if (
+      !!categorySize ||
+      !!companyNameSize ||
+      !!statusSize ||
+      totalRangeSelected
+    ) {
       return tableData.filter((item) => {
         return (
-          (extraFiltersOptionsSelected.category?.size
+          (categorySize
             ? extraFiltersOptionsSelected.category.has(item.category)
             : true) &&
-          (extraFiltersOptionsSelected.companyName?.size
+          (companyNameSize
             ? extraFiltersOptionsSelected.companyName.has(item.companyName)
             : true) &&
-          (extraFiltersOptionsSelected.status?.size
+          (statusSize
             ? extraFiltersOptionsSelected.status.has(item.status)
+            : true) &&
+          (totalRangeSelected
+            ? extraFiltersOptionsSelected.totalRevRange.min <
+                item.totalRevenue &&
+              extraFiltersOptionsSelected.totalRevRange.max > item.totalRevenue
             : true)
         );
       });
